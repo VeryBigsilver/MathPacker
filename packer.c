@@ -5,15 +5,26 @@
  * It DEFLATEs the input, ENCODEs the compressed bytes (affine cipher), then
  * writes:  [ stub ][ encoded+compressed payload ][ orig u64 ][ comp u64 ][ magic ]
  *
- * Build: clang -O2 packer.c -o packer -lz
+ * Build: clang -O2 packer.c -o packer -lz   (or gcc)
  */
+
+/* Feature test macros MUST precede any #include (see stub.c). */
+#ifndef _GNU_SOURCE
 #define _GNU_SOURCE
+#endif
+#ifndef _POSIX_C_SOURCE
+#define _POSIX_C_SOURCE 200809L
+#endif
+#ifndef _DEFAULT_SOURCE
+#define _DEFAULT_SOURCE
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
 #include <sys/stat.h>
-#include <zlib.h>
+#include "miniz.h"
 
 #include "mathcrypt.h"
 
